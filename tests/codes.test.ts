@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isValidCode } from "../src/lib/codes";
+import { isValidCode } from "../src/lib/code-validate";
 
 describe("isValidCode", () => {
   it("accepts lowercase alphanumeric of length 4-16", () => {
