@@ -12,6 +12,8 @@ and a CI pipeline.
 - `POST /api/shorten` — create a short code (optionally with TTL)
 - `GET /:code` — 302 redirect with click counter
 - `GET /api/stats/:code` — return click count and metadata
+- `GET /healthz` — liveness probe
+- `GET /readyz` — Redis readiness probe
 - Per-IP rate limiting on the API surface
 - Strict input validation (Zod) and a small custom alphabet for codes
 - JSON structured logs

@@ -12,7 +12,15 @@ const bodySchema = z.object({
   ttlSeconds: z.number().int().min(60).max(60 * 60 * 24 * 365).optional(),
 });
 
-const RESERVED = new Set(["api", "health", "admin", "robots.txt", "favicon.ico"]);
+const RESERVED = new Set([
+  "api",
+  "health",
+  "healthz",
+  "readyz",
+  "admin",
+  "robots.txt",
+  "favicon.ico",
+]);
 
 shortenRouter.post("/", async (req, res) => {
   const parsed = bodySchema.safeParse(req.body);

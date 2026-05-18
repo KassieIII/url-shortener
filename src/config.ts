@@ -8,7 +8,12 @@ const envSchema = z.object({
   CODE_LENGTH: z.coerce.number().int().min(4).max(16).default(7),
 });
 
-const env = envSchema.parse(process.env);
+const rawEnv = { ...process.env };
+for (const key of Object.keys(rawEnv)) {
+  if (rawEnv[key] === "") delete rawEnv[key];
+}
+
+const env = envSchema.parse(rawEnv);
 
 export const config = {
   port: env.PORT,

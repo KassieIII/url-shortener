@@ -8,6 +8,7 @@ import { shortenRouter } from "./routes/shorten";
 import { redirectRouter } from "./routes/redirect";
 import { statsRouter } from "./routes/stats";
 import { logger } from "./lib/logger";
+import { getRedis } from "./lib/redis";
 
 export function createApp() {
   const app = express();
@@ -24,7 +25,16 @@ export function createApp() {
   });
   app.use("/api", limiter);
 
-  app.get("/health", (_req, res) => res.json({ status: "ok" }));
+  app.get(["/health", "/healthz"], (_req, res) => res.json({ status: "ok" }));
+  app.get("/readyz", async (_req, res) => {
+    try {
+      await getRedis().ping();
+      res.json({ status: "ready", redis: "ok" });
+    } catch {
+      res.status(503).json({ status: "not_ready", redis: "unavailable" });
+    }
+  });
+
   app.use("/api/shorten", shortenRouter);
   app.use("/api/stats", statsRouter);
   app.use("/", redirectRouter);
